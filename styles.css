@@ -74,12 +74,13 @@ body {
     }
     
     #interaction-area {
-        /* On mobile, remove rotation and expand to fill screen naturally */
-        transform: none;
-        top: 15%;
-        left: 10%;
-        width: 80%;
-        height: 75%;
+        /* Re-apply rotation so the text aligns perfectly with the slanted paper in the image */
+        transform: rotate(9deg);
+        transform-origin: top left;
+        top: 25%;  /* Push down to avoid the top edge of the book and the clear button */
+        left: 8%; 
+        width: 85%;
+        height: 65%;
     }
 }
 
