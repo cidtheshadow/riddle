@@ -1,4 +1,4 @@
-/* Base Styles & Fallback Layout (In case Tailwind CDN is blocked) */
+/* Base Styles */
 html, body {
     margin: 0;
     padding: 0;
@@ -21,30 +21,27 @@ body {
 
 #cover-view, #diary-view {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    aspect-ratio: 1376 / 768;
-    min-width: 100%;
-    min-height: 100%;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
 }
 
-@media screen and (orientation: portrait) {
-    #app-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(90deg);
-        transform-origin: center center;
-        width: 100vh;
-        height: 100vw;
-    }
+#cover-view img, #diary-view img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Object fit cover creates a cinematic zoom-in on mobile rather than a broken layout */
+    object-fit: cover; 
 }
 
 #cover-view {
     z-index: 20;
     cursor: pointer;
     transition: opacity 1s;
+    overflow: hidden;
 }
 
 #diary-view {
@@ -54,26 +51,7 @@ body {
     transition: opacity 1s;
 }
 
-#cover-view img, #diary-view img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-}
-
-@media (orientation: portrait) {
-    #diary-view {
-        /* On mobile portrait, shift the book to the right so the left page is perfectly centered on screen */
-        left: 20%; 
-    }
-    #cover-view {
-        /* Shift the cover slightly on mobile so the title is visible */
-        left: 35%;
-    }
-}
-
+/* Base Desktop Layout (1376x768 mapping) */
 #interaction-area {
     position: absolute;
     top: 22%;
@@ -81,54 +59,73 @@ body {
     width: 55%;
     height: 70%;
     max-width: 900px;
-    cursor: text;
+    z-index: 20;
     transform: rotate(12deg);
     transform-origin: top left;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
+}
+
+/* Portrait / Mobile Overrides for Native UX */
+@media screen and (orientation: portrait) {
+    #diary-view img {
+        /* Shift image slightly right so we see more of the writing pages */
+        object-position: 65% center;
+    }
+    
+    #interaction-area {
+        /* On mobile, remove rotation and expand to fill screen naturally */
+        transform: none;
+        top: 15%;
+        left: 10%;
+        width: 80%;
+        height: 75%;
+    }
 }
 
 #drawing-canvas {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    z-index: 10;
+    z-index: 21;
+    pointer-events: auto;
+    touch-action: none;
+    mix-blend-mode: multiply;
+    opacity: 0.8;
 }
 
 #ink-text-container {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 20;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
+    inset: 0;
+    z-index: 22;
+    padding: 0;
+    pointer-events: none;
+    overflow-y: auto;
 }
 
 #ink-text {
     width: 100%;
     height: 100%;
-    outline: none !important;
-    border: none !important;
+    font-family: 'HarryPotter', cursive;
+    font-size: 2.5rem;
+    color: #1a1512;
     background: transparent;
+    border: none;
+    outline: none;
+    line-height: 1.5;
+    pointer-events: auto;
+    transition: opacity 1s;
+    caret-color: transparent;
     padding: 1rem;
     box-sizing: border-box;
-    caret-color: transparent; /* Hide the blinking insertion line */
-    overflow-y: auto;
-    overflow-x: hidden;
-    color: #1a1512;
-    font-size: 32px;
-    line-height: 1.6;
     white-space: pre-wrap;
     word-wrap: break-word;
     text-shadow: 0px 0px 1px rgba(0,0,0,0.5);
-    transition: opacity 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+    #ink-text {
+        font-size: 1.8rem;
+    }
 }
 
 #clear-btn {
@@ -145,12 +142,7 @@ body {
     z-index: 30;
 }
 
-/* Cover View and Aura Animation */
-#cover-view {
-    position: relative;
-    overflow: hidden;
-}
-
+/* Aura Animation */
 #cover-view::after {
     content: '';
     position: absolute;
@@ -166,47 +158,21 @@ body {
 }
 
 @keyframes pulse-aura {
-    0% {
-        opacity: 0.3;
-        transform: translate(-50%, -50%) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.05);
-    }
+    0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.95); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
 }
 
+#ink-text.fade-out { opacity: 0; }
+#ink-text:focus { outline: none; }
 
-
-#ink-text.fade-out {
-    opacity: 0;
-}
-
-#ink-text:focus {
-    outline: none;
-}
-
-/* Animations for Gemini's response */
 @keyframes appear {
-    0% {
-        opacity: 0;
-        filter: blur(4px);
-    }
-    100% {
-        opacity: 1;
-        filter: blur(0);
-    }
+    0% { opacity: 0; filter: blur(4px); }
+    100% { opacity: 1; filter: blur(0); }
 }
 
 .char-appear {
     animation: appear 0.5s ease forwards;
     opacity: 0;
-}
-
-/* Canvas styling */
-#drawing-canvas {
-    mix-blend-mode: multiply;
-    opacity: 0.8;
 }
 
 .hide {
