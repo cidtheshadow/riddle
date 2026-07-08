@@ -18,8 +18,8 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     /* Force container to preserve image aspect ratio (1376:768) while covering screen */
-    width: max(100vw, 100vh * (1376 / 768));
-    height: max(100vh, 100vw * (768 / 1376));
+    width: max(100vw, 179.166vh);
+    height: max(100vh, 55.814vw);
 }
 
 #cover-view {
