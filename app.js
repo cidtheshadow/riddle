@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetInteractionTimer() {
         if (initialGreetingActive) return;
         clearTimeout(typingTimeout);
-        typingTimeout = setTimeout(processUserInput, 800); // Wait 0.8 seconds after last interaction
+        typingTimeout = setTimeout(processUserInput, 400); // Super fast 400ms debounce
     }
 
     async function processUserInput() {
@@ -189,23 +189,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 
-                let prompt = "You are Tom Riddle's diary from Harry Potter and the Chamber of Secrets. You possess the 16-year-old soul fragment of Lord Voldemort. You are manipulative, charming, highly intelligent, and secretly menacing. You speak to the user as if they are a student at Hogwarts writing in your blank pages. Be fully aware of Harry Potter lore up to 1992. Respond concisely but with deep intrigue. Keep your response to a maximum of 2-3 short sentences. Never exceed 40 words. Do not break character under any circumstances. OUTPUT STRICTLY AS RAW TEXT ONLY. NO MARKDOWN. NO THINKING STEPS. User wrote: " + textContent;
+                let prompt = "You are Tom Riddle's diary from Harry Potter. You possess the 16-year-old soul fragment of Lord Voldemort. You speak to the user as if they are a student writing in your blank pages. Be fully aware of Harry Potter lore. Respond concisely but with deep intrigue. Keep your response to a maximum of 2 short sentences. Never exceed 30 words. OUTPUT STRICTLY AS RAW TEXT ONLY. NO MARKDOWN. User wrote: " + textContent;
                 
                 if (textContent === "" && !isCanvasBlank) {
                     prompt = "You are Tom Riddle's diary. The user has drawn something in ink on your pages. Respond concisely, mysteriously, and slightly menacingly about the drawing. OUTPUT STRICTLY AS RAW TEXT ONLY. NO MARKDOWN.";
                 }
 
-                // Call OpenRouter API (OpenAI compatible)
+                // Call OpenRouter API with a lightning fast model
                 const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                     method: "POST",
                     headers: {
                         "Authorization": `Bearer ${API_KEY}`,
                         "Content-Type": "application/json",
-                        "HTTP-Referer": "http://localhost:8000/", // Required by OpenRouter
-                        "X-Title": "Tom Riddle Diary" // Required by OpenRouter
+                        "HTTP-Referer": "http://localhost:8000/",
+                        "X-Title": "Tom Riddle Diary"
                     },
                     body: JSON.stringify({
-                        "model": "google/gemini-2.0-pro-exp-02-05:free", // Using a faster/smarter model directly if available, fallback handled by OR
+                        "model": "google/gemini-2.5-flash", // Extremely fast model for instant responses
                         "messages": [
                             {"role": "user", "content": prompt}
                         ]
@@ -258,8 +258,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 span.className = 'char-appear';
                 inkText.appendChild(span);
                 i++;
-                // Speed up typing animation significantly (average 25ms per char)
-                setTimeout(typeChar, Math.random() * 20 + 15); 
+                // Speed up typing animation significantly (average 10ms per char for instant feel)
+                setTimeout(typeChar, Math.random() * 5 + 5); 
             } else {
                 // Auto-fade Tom's response after 4 seconds (diary absorbs ink)
                 setTimeout(() => {
