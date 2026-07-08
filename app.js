@@ -144,8 +144,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Typing Logic
-    inkText.addEventListener('input', () => {
-        resetInteractionTimer();
+    inkText.addEventListener('keydown', (e) => {
+        if (initialGreetingActive) {
+            clearGreeting();
+            return;
+        }
+        
+        // Submit only when user presses Enter
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault(); // Prevent new line
+            
+            // Only submit if there's text or drawing
+            const textContent = inkText.innerText.trim();
+            if (textContent || !isCanvasEmpty()) {
+                clearTimeout(typingTimeout);
+                processUserInput();
+            }
+        }
     });
 
     // Clear Button
@@ -157,11 +172,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    // Interaction Timer - wait for user to stop typing/drawing before responding
+    // Interaction Timer - only used for drawing now
     function resetInteractionTimer() {
         if (initialGreetingActive) return;
         clearTimeout(typingTimeout);
-        typingTimeout = setTimeout(processUserInput, 400); // Super fast 400ms debounce
+        typingTimeout = setTimeout(processUserInput, 2000); // Wait 2 seconds after drawing
     }
 
     async function processUserInput() {
