@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle Transition from Cover to Diary
     coverView.addEventListener('click', () => {
         coverView.classList.add('hide');
+        diaryView.classList.remove('hidden');
         diaryView.classList.add('show');
         
         // Play BGM and reduce volume
