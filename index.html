@@ -18,36 +18,39 @@
         };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css?v=8">
+    <link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body class="bg-black overflow-hidden m-0 h-screen w-screen relative">
     
     <!-- Audio -->
     <audio id="bgm" src="bgm.webm" loop></audio>
 
-    <!-- View 1: Closed Cover -->
-    <div id="cover-view" class="absolute inset-0 cursor-pointer transition-opacity duration-1000 z-20">
-        <img src="cover_bg.png" alt="Tom Riddle's Diary - Closed" />
-    </div>
+    <!-- App Container for Mobile Rotation -->
+    <div id="app-container">
+        <!-- View 1: Closed Cover -->
+        <div id="cover-view" class="absolute inset-0 cursor-pointer transition-opacity duration-1000 z-20">
+            <img src="cover_bg.png" alt="Tom Riddle's Diary - Closed" />
+        </div>
 
-    <!-- View 2: Open Diary -->
-    <div id="diary-view" class="absolute inset-0 hidden z-10">
-        <img src="open_bg_blank.jpg" alt="Tom Riddle's Diary - Open" />
-        
-        <!-- Interactive Area -->
-        <div id="interaction-area">
-            <canvas id="drawing-canvas"></canvas>
-            <div id="ink-text-container">
-                <div id="ink-text" contenteditable="true" spellcheck="false">
+        <!-- View 2: Open Diary -->
+        <div id="diary-view" class="absolute inset-0 hidden z-10">
+            <img src="open_bg_blank.jpg" alt="Tom Riddle's Diary - Open" />
+            
+            <!-- Interactive Area -->
+            <div id="interaction-area">
+                <canvas id="drawing-canvas"></canvas>
+                <div id="ink-text-container">
+                    <div id="ink-text" contenteditable="true" spellcheck="false">
+                    </div>
                 </div>
+                <button id="clear-btn" aria-label="Clear page" title="Clear page">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                </button>
             </div>
-            <button id="clear-btn" aria-label="Clear page" title="Clear page">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
-            </button>
         </div>
     </div>
 
     <!-- Normal script, no module required to avoid browser blocking -->
-    <script src="app.js?v=7"></script>
+    <script src="app.js?v=9"></script>
 </body>
 </html>

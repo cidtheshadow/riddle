@@ -12,6 +12,13 @@ body {
     position: relative;
 }
 
+#app-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
 #cover-view, #diary-view {
     position: absolute;
     top: 50%;
@@ -20,6 +27,26 @@ body {
     /* Force container to preserve image aspect ratio (1376:768) while covering screen */
     width: max(100vw, 179.166vh);
     height: max(100vh, 55.814vw);
+}
+
+@media screen and (orientation: portrait) {
+    #app-container {
+        transform: rotate(90deg);
+        transform-origin: center center;
+        width: 100vh;
+        height: 100vw;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -50vh;
+        margin-top: -50vw;
+    }
+    
+    #cover-view, #diary-view {
+        /* Viewport units ignore rotation, so we must physically swap vw and vh */
+        width: max(100vh, 179.166vw);
+        height: max(100vw, 55.814vh);
+    }
 }
 
 #cover-view {
